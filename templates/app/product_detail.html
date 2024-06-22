@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Overcomer's Electronics limited | {{product.title}}{% endblock %}
+
+{% block content %}
+<style>
+    .container_{
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: center;
+    }
+    .image_container{
+        width: fit-content;
+        height: fit-content;
+        margin: 10px;
+        transition: .5s;
+    }
+    .details{
+        width: 40%;
+        height: fit-content;
+        margin: 10px;
+    }
+    @media screen and (max-width:768px) {
+        .image_container img{
+            width: 100%;
+            height: auto;
+        }
+        .details{
+            width: 60%;
+        }
+    }
+    @media screen and (max-width:760px) {
+        .container_{
+            display: block;
+        }
+        .image_container img{
+            width: 100%;
+            height: auto;
+        }
+        .details{
+            width: 95%;
+        }
+    }
+    .card-btn {
+        margin-inline: auto;
+        padding: 15px;
+        border: 1px solid var(--winter-sky);
+        border-radius: 0;
+        color: var(--winter-sky);
+        transition: var(--transition-1);
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .card-btn:is(:hover, :focus) {
+        color: var(--white);
+        background-color: var(--winter-sky);
+    }
+
+    .title {
+        text-align: left;
+        margin-block-end: 15px;
+        margin-left: 0;
+        margin: 15px;
+    }
+
+    .texts a p{
+        color: rgb(37, 37, 37) !important;
+    }
+
+    .texts {
+        text-align: right;
+        margin-block-end: 20px; 
+        margin-right: 0;
+        margin: 15px;
+    }
+</style>
+<section class="product">
+    <form action="{% url 'search' %}" method="post" action="">
+        {% csrf_token %}
+        <input class="search" type="search" name="search" id="search" placeholder="example: Generator ">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+</section>
+<section class="detail" id="detail">
+    <div class="container_">
+        <div class="image_container">
+            <img src="{{product.image.url}}" alt="{{product.title}}">
+            <h3 class="h3 title">
+                <p style="color: rgb(37, 37, 37) !important;font-size: 1.8rem;">
+                    {{product.title}}
+                </p>
+            </h3>
+
+            <p class="texts" style="color: rgb(65, 165, 65);">₦ {{product.amount}}.00 </p>
+            <a class="whatsapp_button" href="https://wa.me/2348026509434?text={{product.url_text}}">
+                <button class="card-btn" aria-label="Show More">
+                  <span>Buy Now</span>
+                </button>
+            </a>
+        </div>
+        <div class="details">
+            <p>
+                {{ product.description | safe }}
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+  

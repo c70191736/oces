@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Overcomer's Electronics limited | Products{% endblock %}
+
+{% block content %}
+<style>
+    
+.service-list {
+  display: grid;
+  gap: 30px;
+}
+
+.service-card {
+  padding: 30px;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-12);
+}
+
+.service-card .card-icon {
+  max-width: 400px;
+  display: grid;
+  place-content: center;
+  margin-inline: auto;
+  transition: var(--transition-1);
+}
+
+.service-card:hover .card-icon { background-color: var(--winter-sky); }
+
+.service-card .title {
+  text-align: left;
+  margin-block-end: 15px;
+  margin-left: 0;
+  margin: 15px;
+}
+
+.service-card .text a p{
+    color: rgb(37, 37, 37) !important;
+}
+
+.service-card .text {
+  text-align: right;
+  margin-block-end: 20px; 
+  margin-right: 0;
+  margin: 15px;
+}
+
+.service-card .card-btn {
+  margin-inline: auto;
+  padding: 15px;
+  border: 1px solid var(--winter-sky);
+  border-radius: 0;
+  color: var(--winter-sky);
+  transition: var(--transition-1);
+  width: 100%;
+}
+
+.service-card .card-btn:is(:hover, :focus) {
+  color: var(--white);
+  background-color: var(--winter-sky);
+}
+
+.paginator{
+  width: 100%;
+  height: fit-content;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.paginator a{
+  padding: 15px;
+  background-color: hsl(116, 100%, 56%);
+  color: white;
+  border-radius: 2px;
+  transition: .5s;
+}
+
+.paginator a:hover{
+  background-color: hsl(116, 100%, 42%);;
+}
+
+</style>
+<section class="product">
+    <form action="{% url 'search' %}" method="post" action="">
+        {% csrf_token %}
+        <input class="search" type="search" name="search" id="search" placeholder="example: Generator ">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+</section>
+<section class="section service" id="services">
+    <div class="container">
+
+      <ul class="service-list">
+        {% for product in products %}
+        <li>
+          <div class="service-card">
+
+            <div class="card-icon">
+                <a href="{% url 'product-detail' product.id %}">
+                    <img src="{{ product.image.url }}" alt="img" class="image" style="height: 100%; width: 100%;">
+                </a>
+            </div>
+
+            <h3 class="h3 title">
+                <a href="{% url 'product-detail' product.id %}">
+                    <p style="color: rgb(37, 37, 37) !important;font-size: 1.8rem;">
+                        {{product.title}}
+                    </p>
+                </a>
+            </h3>
+
+            <p class="text" style="color: rgb(65, 165, 65);">₦ {{product.amount}}.00 </p>
+            
+            <a class="whatsapp_button" href="{% url 'product-detail' product.id %}">
+              <button class="card-btn" aria-label="Show More">
+                <span>See More</span>
+              </button>
+            </a>
+            
+
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="paginator">
+      {% if page_obj.has_other_pages %}
+        {% if page_obj.has_previous %}
+            <a href="?page=1">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+      {% endif %}
+  </div>
+</section>
+{% endblock %}

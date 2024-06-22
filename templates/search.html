@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Overcomer's Electronics limited | Products | Search{% endblock %}
+
+{% block content %}
+<style>
+    
+    .service-list {
+      display: grid;
+      gap: 30px;
+    }
+    
+    .service-card {
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-12);
+    }
+    
+    .service-card .card-icon {
+      max-width: 400px;
+      display: grid;
+      place-content: center;
+      margin-inline: auto;
+      transition: var(--transition-1);
+    }
+    
+    .service-card:hover .card-icon { background-color: var(--winter-sky); }
+    
+    .service-card .title {
+      text-align: left;
+      margin-block-end: 15px;
+      margin-left: 0;
+      margin: 15px;
+    }
+    
+    .service-card .text a p{
+        color: rgb(37, 37, 37) !important;
+    }
+    
+    .service-card .text {
+      text-align: right;
+      margin-block-end: 20px; 
+      margin-right: 0;
+      margin: 15px;
+    }
+    
+    .service-card .card-btn {
+      margin-inline: auto;
+      padding: 15px;
+      border: 1px solid var(--winter-sky);
+      border-radius: 0;
+      color: var(--winter-sky);
+      transition: var(--transition-1);
+      width: 100%;
+    }
+    
+    .service-card .card-btn:is(:hover, :focus) {
+      color: var(--white);
+      background-color: var(--winter-sky);
+    }
+    
+    
+    </style>
+<section class="product">
+    <form action="{% url 'search' %}" method="post" action="">
+        {% csrf_token %}
+        <input class="search" type="search" name="search" id="search" placeholder="example: Generator ">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+</section>
+{% if search %}
+<section class="section service" id="services">
+    <div class="container">
+
+      <ul class="service-list">
+        {% for x in title %}
+        <li>
+          <div class="service-card">
+
+            <div class="card-icon">
+                <a href="{% url 'product-detail' x.id %}">
+                    <img src="{{ x.image.url }}" alt="img" class="image" style="height: 100%; width: 100%;">
+                </a>
+            </div>
+
+            <h3 class="h3 title">
+                <a href="{% url 'product-detail' x.id %}">
+                    <p style="color: rgb(37, 37, 37) !important;font-size: 1.8rem;">
+                        {{x.title}}
+                    </p>
+                </a>
+            </h3>
+
+            <p class="text" style="color: rgb(65, 165, 65);">₦ {{x.amount}}.00 </p>
+
+          
+            <a class="whatsapp_button" href="https://wa.me/2348026509434?text={{x.url_text}}">
+              <button class="card-btn" aria-label="Show More">
+                <span style="color: rgb(37, 37, 37) !important;font-size: 1.5rem;">buy</span>
+              </button>
+            </a>
+            
+
+          </div>
+        </li>
+        {% endfor %}
+        {% for y in amount %}
+        <li>
+          <div class="service-card">
+
+            <div class="card-icon">
+                <a href="{% url 'product-detail' y.id %}">
+                    <img src="{{ y.image.url }}" alt="img" class="image" style="height: 100%; width: 100%;">
+                </a>
+            </div>
+
+            <h3 class="h3 title">
+                <a href="{% url 'product-detail' y.id %}">
+                    <p style="color: rgb(37, 37, 37) !important;font-size: 1.8rem;">
+                        {{y.title}}
+                    </p>
+                </a>
+            </h3>
+
+            <p class="text" style="color: rgb(65, 165, 65);">₦ {{y.amount}}.00 </p>
+
+          
+            <a class="whatsapp_button" href="https://wa.me/2348026509434?text={{y.url_text}}">
+              <button class="card-btn" aria-label="Show More">
+                <span style="color: rgb(37, 37, 37) !important;font-size: 1.5rem;">buy</span>
+              </button>
+            </a>
+            
+
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+
+    </div>
+</section>
+{% else %}
+<center style="margin-top: 100px;display: flex;align-items: center;justify-content: center;margin: 50px 0px;">
+    <div>
+        <h1>Search not Found ..</h1>
+    </div>
+</center>
+{% endif %}
+{% endblock %}
+  
